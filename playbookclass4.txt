@@ -1,0 +1,124 @@
+---
+ - hosts: group1
+   become: true
+   tasks:
+     - name: installation of httpd package
+       yum: name="{{item}}" state=present
+       with_items:
+        - httpd
+       register: pkg_install
+       when: ansible_distribution ==  'CentOS'
+
+     - name: starting httpd service
+       service: name="{{item}}" state=started enabled=yes
+       with_items:
+        - httpd
+       register: httpd_service
+       when: pkg_install|success and ansible_distribution ==  'CentOS'
+
+
+      - name: installation of apache2 package
+       apt: name="{{item}}" state=present
+       with_items:
+        - apache2
+       register: apache2_install
+       when: ansible_distribution ==  'Ubuntu'
+
+
+     - name: starting apache2 service
+       service: name="{{item}}" state=started enabled=yes
+       with_items:
+        - apache2
+       register: apache2_service
+       when: apache2_install|success and ansible_distribution ==  'Ubuntu'
+
+     - name: copy index.html
+       copy: src=index.html dest=/var/www/html/
+       register: copy_status
+       when: httpd_service|success or apache2_install|success
+       notify:
+          - apache2_restart
+          - httpd_restart
+
+
+    handlers:
+        - name: httpd_restart
+          service: name="{{item}}" state=restarted
+          with_items:
+              - httpd
+          when: ansible_distribution ==  'CentOS'
+
+
+        - name: apache2_restart
+          service: name="{{item}}" state=restarted
+          with_items:
+              - apache2
+          when: ansible_distribution ==  'Ubuntu'
+
+
+
+
+---
+ - hosts: group1
+   become: true
+   tasks:
+     - include: CentOS.yml
+       when: ansible_distribution == "CentOS"
+     - include: Ubuntu.yml
+       when: ansible_distribution == "Ubuntu"
+
+
+
+
+vi CentOS.yml
+     - name: installation of httpd package
+       yum: name="{{item}}" state=present
+       with_items:
+        - httpd
+       register: pkg_install
+       
+     - name: starting httpd service
+       service: name="{{item}}" state=started enabled=yes
+       with_items:
+        - httpd
+       register: httpd_service
+       when: pkg_install|success 
+
+      - name: copy index.html
+        copy: src=index.html dest=/var/www/html/
+        register: copy_status
+        when: httpd_service|success or apache2_install|success
+        
+
+        - name: httpd_restart
+          service: name="{{item}}" state=restarted
+          with_items:
+              - httpd
+          when: copy_status|success
+
+
+vi Ubuntu.yml
+    - name: installation of apache2 package
+       apt: name="{{item}}" state=present
+       with_items:
+        - apache2
+       register: apache2_install
+   
+     - name: starting apache2 service
+       service: name="{{item}}" state=started enabled=yes
+       with_items:
+        - apache2
+       register: apache2_service
+       when: apache2_install|success 
+
+     - name: copy index.html
+       copy: src=index.html dest=/var/www/html/
+       register: copy_status
+       when: apache2_install|success
+
+     - name: apache2_restart
+       service: name="{{item}}" state=restarted
+       with_items:
+            - apache2
+        when: copy_status|success
+

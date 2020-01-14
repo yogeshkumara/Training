@@ -1,0 +1,64 @@
+https://www.middlewareinventory.com/blog/ansible-ad-hoc-command-examples-cheat-sheet/
+
+
+
+ansible localhost -m file -a "path=/var/tmp/file1 mode=644 state=file"
+
+ansible localhost -m file -a "path=/var/tmp/file1 mode=644 state=touch"
+
+
+
+ansible localhost -m shell -a " touch /var/tmp/file1; echo test >> /var/tmp/file1; chmod 644 /var/tmp/file1"
+
+ansible localhost -m command -a " touch /var/tmp/file1; echo test >> /var/tmp/file1; chmod 644 /var/tmp/file1"
+
+ansible group1 -m copy -a "src=/var/tmp/file1 dest=/tmp" -b
+
+ansible group1 -m group -a "name=testgrp state=present" -b
+ansible group1 -m user -a "name=testuser state=present group=testgrp" -b
+
+ssh ansadmin@172.10.1.3 -C "su - root -c 'groupadd testgroup' "     --- b 
+ssh ansadmin@172.10.1.3 -C "su - root -c 'useradd -md /home/testuser -g testgroup testuser' "  --- b 
+
+ssh ansadmin@172.10.1.3 -C "sudo groupadd testgroup"   --   s
+
+playbook
+
+ vi sampleplaybook.yaml
+
+--- 
+ - hosts: group1
+   become: true
+   tasks:
+       - name: create group testgrp
+         group: name=testgrp state=present
+
+       - name: create testuser
+         user: name=testuser state=present group=testgrp
+
+
+
+ansible-playbook --syntax-check sampleplaybook.yaml   ---  check the syntax
+ansible-playbook sampleplaybook.yaml --check               ---  dry run 
+ansible-playbook sampleplaybook.yaml                           ---   executing the code
+
+
+
+        - group: name=testgrp state=present
+
+        - user: name=testuser state=present group=testgrp
+         
+
+        - name: create group testgrp
+          group: 
+	name: testgrp 
+	state: present
+
+       - name: create testuser
+         user: 
+	name: testuser 
+	state: present 
+	group: testgrp
+
+
+

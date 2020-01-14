@@ -1,0 +1,3 @@
+https://www.aquasec.com/wiki/display/containers/Kubernetes+Architecture+101
+
+https://github.com/miguellgt/play-k8s

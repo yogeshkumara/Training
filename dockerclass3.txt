@@ -1,0 +1,51 @@
+RUN \
+
+apt-get update && \
+
+apt-get -y upgrade && \
+
+apt-get install -y apache2 && \
+
+
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y apache2 
+
+
+wget https://github.com/AKSarav/SampleWebApp/raw/master/dist/SampleWebApp.war
+
+
+/root/SampleWebApp.war
+
+vi Dockerfile
+
+FROM tomcat:8.0.20-jre8
+MAINTAINER  KUMAR
+RUN mkdir /usr/local/tomcat/webapps/myapp
+COPY /root/SampleWebApp.war /usr/local/tomcat/webapps/myapp/
+
+:wq
+docker pull tangpeng/tomcat8-apline-jre8
+docker build -t  gontrand/tomcatcust:1.0 -f Dockerfile .
+
+docker images
+
+docker run -itd -p 8094:8080 --name tomcatcontainer1  gontrand/tomcatcust:1.0
+
+docker inspect tomcatcontainer1
+
+curl http://172.16.0.5:8080
+curl http:// 192.16.12.3:8094
+internet explorer ---    
+
+CMD ping google.com --- shell method
+
+CMD ["ping","google.com"]  --  startup method
+
+
+ENTRYPOINT ping google.com
+ENTRYPOINT python myapplication.py
+
+ENTRYPOINT ["ping","google.com"]
+ENTRYPOINT ["python","myapplication.py"]
+
+ENTRYPOINT ["/usr/sbin/httpd","-D", "FOREGROUND" , "&" ]

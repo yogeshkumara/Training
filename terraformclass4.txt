@@ -1,0 +1,26 @@
+
+terraform state list -- resources created 
+
+terraform state show aws_instance.testsystem1  --- resource in detailes 
+
+terraform show -- Details for all the resources 
+
+terraform  destroy -var  ....        -- Delete the resources. 
+
+terraform validate
+
+
+resource "aws_ebs_volume" "ebs-volume-1" {
+   availability_zone="us-east-1"
+    size = 20
+    type = "gp2" 
+    tags {
+        Name = "extra volume data"
+    }
+}
+
+resource "aws_volume_attachment" "ebs-volume-1-attachment" {
+  device_name = "/dev/xvdh"
+  volume_id = "${aws_ebs_volume.ebs-volume-1.id}"
+  instance_id = "${aws_instance.testsystem1.id}"
+}

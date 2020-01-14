@@ -1,0 +1,50 @@
+yum install java-1.8.0-openjdk.x86_64 
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+yum install jenkins
+systemctl start jenkins
+systemctl enable jenkins
+
+grep -i jenkins /etc/passwd
+jenkins:x:997:994:Jenkins Automation Server:/var/lib/jenkins:/bin/bash
+su - jenkins 
+exit
+
+vi  /etc/sudoers
+jenkins ALL=NOPASSWD: ALL
+
+  
+
+
+echo " yum install $pkginstall_confirmation $pkgName"
+sudo yum install $pkginstall_confirmation $pkgName
+sudo yum list $pkgName
+sudo yum remove $pkginstall_confirmation $pkgName
+
+
+node {
+	parameters {
+        		string( name: 'PkgName',  description: 'provide the package name?' )
+		choice( name: 'pkginstall_confirmation', choice: "-y \n -n", description: 'whether you want to install package?' )
+    	}
+
+
+	stage("installing package") {
+		echo " yum install $pkginstall_confirmation $pkgName"
+		sudo yum install $pkginstall_confirmation $pkgName
+
+	}
+	
+	stage("Removing package") {
+		sudo yum list $pkgName
+		sudo yum remove $pkginstall_confirmation $pkgName
+
+	}
+
+}
+
+
+
+pkginstall_confirmation

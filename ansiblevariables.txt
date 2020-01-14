@@ -1,0 +1,93 @@
+ vars:
+     pkg_list: [ httpd, mariadb-server ]
+     Service_name: httpd
+     config_file: index.html
+
+
+ansible-playbook secondplaybook3.yml -e '{"pkg_list": [ httpd, mariadb-server]}'  -e "Service_name=httpd"  -e "config_file=index.html"
+
+
+vars_prompt:
+    - name: "pkg_list"
+      prompt: "Enter list of packages:"
+    - name: "Service_name"
+      prompt: "Enter service name :"
+    - name: "config_file"
+      prompt: "Enter  configuratin location :"
+
+
+ var_files:
+      - variablefile.yaml
+
+vi variablefile.yaml
+---
+pkg_list: [ httpd, mariadb-server ]
+Service_name: httpd
+config_file: index.html
+
+
+
+- name: Getting os type
+  command: uname-a|awk '{print $1}'
+  register: command_output
+
+- set_facts:
+     system_type: command_output.stdout
+
+-  name: install packages
+   yum: name=httpd state=installed
+   when: system_type== 'Linux'
+
+
+
+
+---
+ - hosts: local
+   become: true
+   vars_prompt:
+    - name: "user_name"
+      prompt: "Enter the user name:"
+
+    - name: "user_password"
+      prompt: "Enter password"
+      private: yes
+      encrypt: "md5_crypt"
+      confirm: yes
+    
+
+   tasks:
+     - name: Creating user
+       user: name={{user_name}} password={{user_password}} shell=/bin/bash
+
+ansible group1 -m setup |grep -i ansible
+
+
+
+	"ansible_distribution": "CentOS",
+    "ansible_distribution_release": "Final",
+    "ansible_distribution_version": "5.9"
+
+ansible_distribution_major_version  -- 
+
+ansible_distribution_release -- 
+
+
+
+1 one ubuntu machine
+2. add as a client
+3 setup, ping, ssh
+
+playbook -- ubuntu/centos
+
+variables:  
+ubuntu
+
+package name:apache 2
+servicename :apache2
+config:index.html
+
+centos
+
+package name:httpd
+service name :httpd
+config:index.html

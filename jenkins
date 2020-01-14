@@ -1,0 +1,162 @@
+pipeline {
+  agent any
+  stages {
+    stage('Stage 1') {
+      steps {
+        echo 'Hello world!'
+      }
+    }
+  }
+}
+
+
+
+
+node { 
+  stage('Stage 1') {
+    echo 'Hello World' 
+  }
+}
+
+
+node {
+	parameters {
+        string( name: 'PkgName',  description: 'provide the package name?' default: "httpd" )
+		choice( name: 'pkginstall_confirmation', choice: "-y \n -n \n yes \n no ", description: 'confirm?' )
+    	}
+
+
+	stage("installing package") {
+		echo " yum install $pkginstall_confirmation $pkgName"
+		sudo yum install $pkginstall_confirmation $pkgName
+
+	}
+	
+	stage("Removing package") {
+		sudo yum list $pkgName
+		sudo yum remove $pkginstall_confirmation $pkgName
+
+	}
+
+node {
+	def pkginstall_confirmation = "-y"
+	def pkgName = 'httpd screen'
+
+
+	stage("installing package") {
+		echo " yum install $pkginstall_confirmation $pkgName"
+		sudo yum install $pkginstall_confirmation $pkgName
+
+	}
+	
+	stage("Removing package") {
+		sudo yum list $pkgName
+		sudo yum remove $pkginstall_confirmation $pkgName
+
+	}
+
+
+pipeline {
+  agent any
+  
+  stages {
+    stage('Test') {
+      steps {
+        sh 'echo "Fail!"; exit 0'
+	
+      }
+    }
+  }
+  post {
+    always {
+      echo 'always runs regardless of the completion status of the Pipeline run'
+    }
+    success {
+      echo 'step will run only if the build is successful'
+    }
+    failure {
+      echo 'only when the Pipeline is failed '
+    }
+	}
+}
+
+
+pipeline {
+  agent any
+  stages {
+    stage('Test') {
+      steps {
+        sh '''echo " yum install $pkginstall_confirmation $pkgName"
+		      sudo yum install $pkginstall_confirmation $pkgName'''
+      }
+    }
+  }
+  post {
+    always {
+      echo 'always runs regardless of the completion status of the Pipeline run'
+    }
+    success {
+      echo 'step will run only if the build is successful'
+    }
+    failure {
+      echo 'only when the Pipeline is currently in a '
+    }
+}
+}	
+	
+pipeline {
+  agent any
+  stages {
+    stage('Test') {
+      steps {
+        sh '''echo " yum install $pkginstall_confirmation $pkgName"
+		      sudo yum install $pkginstall_confirmation $pkgName'''
+      }
+    }
+  }
+  post {
+    always {
+      echo 'always runs regardless of the completion status of the Pipeline run'
+    }
+    success {
+      mail to: 'kumar@gmail.com',
+      subject: "Pipeline build is success : ${currentBuild.fullDisplayName}",
+      body: "Error in ${env.BUILD_URL}"
+    }
+    failure {
+      mail to: 'kumar@gmail.com',
+      subject: "Pipeline has failed: ${currentBuild.fullDisplayName}",
+      body: "Error in ${env.BRANCH_NAME} ${env.BUILD_URL}   ${env.JOB_NAME}"
+    }
+}
+}
+
+http://localhost:8080/env-vars.html/
+
+
+pipeline {
+  agent any
+  stages {
+   if (env.BRANCH_NAME =="master") {
+    stage('Test') {
+      steps {
+        sh '''echo " yum install $pkginstall_confirmation $pkgName"
+		      sudo yum install $pkginstall_confirmation $pkgName'''
+      }
+    }
+  }
+  }
+  post {
+    always {
+      echo 'always runs regardless of the completion status of the Pipeline run'
+    }
+    success {
+      mail to: 'kumar@gmail.com',
+      subject: "Pipeline build is success : ${currentBuild.fullDisplayName}",
+      body: "Error in ${env.BUILD_URL}"
+    }
+    failure {
+      
+	  
+}
+}

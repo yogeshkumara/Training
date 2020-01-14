@@ -1,0 +1,5 @@
+https://www.google.com/imgres?imgurl=https%3A%2F%2Frobin.io%2Fwp-content%2Fuploads%2F2017%2F01%2Flinux-vs-docker-comparison-architecture-docker-components.png&imgrefurl=https%3A%2F%2Frobin.io%2Fblog%2Fcontainers-deep-dive-lxc-vs-docker-comparison%2F&docid=6zbWNaF7KUW0PM&tbnid=AfGnqueGte31MM%3A&vet=10ahUKEwi-vs_h9LXjAhUP3Y8KHbCnCgQQMwifASgWMBY..i&w=2000&h=1389&bih=852&biw=1745&q=docker%20architecture&ved=0ahUKEwi-vs_h9LXjAhUP3Y8KHbCnCgQQMwifASgWMBY&iact=mrc&uact=8
+
+https://www.google.com/imgres?imgurl=https%3A%2F%2Fitechcraft.com%2Fwp-content%2Fuploads%2F2016%2F12%2Fmicroservice-architecture.png&imgrefurl=https%3A%2F%2Fitechcraft.com%2Fdocker-containers-microservice-architecture%2F&docid=He0H_we-76XzCM&tbnid=kEDN6eKRCPK2yM%3A&vet=10ahUKEwi-vs_h9LXjAhUP3Y8KHbCnCgQQMwi_ASg2MDY..i&w=819&h=497&bih=852&biw=1745&q=docker%20architecture&ved=0ahUKEwi-vs_h9LXjAhUP3Y8KHbCnCgQQMwi_ASg2MDY&iact=mrc&uact=8
+
+http://www.studytrails.com/devops/docker/docker-container-easy-to-understand-introduction/

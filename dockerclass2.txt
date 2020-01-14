@@ -1,0 +1,16 @@
+docker images
+
+  -d, --detach        # run in background
+  -i, --interactive   # stdin
+  -t, --tty           # interactive
+
+docker run -itd --name container1 centos
+
+docker ps
+
+docker exec -it container1 bash              -- exit 
+docker ps -a
+docker attach container1                                --- exit( ctrl +p and ctrl +q )
+docker ps -a
+
+

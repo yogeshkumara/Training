@@ -1,0 +1,59 @@
+node {
+	stage (‘Build’) {
+		echo "This is a test code"
+		sh '''sudo yum repolist'''
+	}
+	stage (‘Test’) {
+		echo "Installing httpd"
+		sh '''sudo yum install -y httpd'''
+	}
+}
+
+
+pipeline {
+	agent any 
+	parameters {
+        		string( name: 'PkgName',  description: 'provide the package name?' )
+		choice( name: 'pkginstall_confirmation', choice: "-y \n -n", description: 'whether you want to install package?' )
+    	}
+	stages {
+		stage(‘Build’) {
+		steps {
+			echo "This is a test code"
+			sh '''sudo yum list $PkgName'''
+			}
+		}
+		stage (‘Test’) {
+		steps {
+			echo "Installing httpd"
+			sh '''sudo yum install -y $PkgName'''
+			}
+		}
+	}
+}
+
+
+
+node {
+	def gitrepo = https://github.com/ansiblecode.git
+	parameters {
+        		string( name: 'PlaybookName',  description: 'Enter the playbook to install?' )
+		string( name: 'GrpName',  description: 'Enter the client group name?' )
+    	}
+
+	stage (‘staging’) {
+		sh ''' cd /var/tmp/
+		       sudo git clone $gitrepo'''
+	}
+	stage (‘Deployment’) {
+		sh ''' cd /var/tmp/
+		        sudo su - ansadmin
+		       ansible-playbook $GrpName $PlaybookName'''
+	}
+
+	stage (‘Clearing’) {
+		sh ''' cd /var/tmp/
+		        rm -rf ansiblecode''
+	}
+
+}

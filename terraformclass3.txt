@@ -1,0 +1,69 @@
+resource "aws_subnet" "webservers" {
+  count                   = "${var.public_subnets_count}"   -- 3 
+  vpc_id                  = "${aws_vpc.main_vpc.id}"
+  cidr_block              = "${var.cidr_webservers[count.index]}"
+  availability_zone       = "${data.aws_availability_zones.azs.names[count.index]}"
+  map_public_ip_on_launch = true
+
+
+data "	" "azs" {}
+
+variable "public_subnets_count" {
+  default = "2"
+}
+
+
+_____________________________________________________________________________
+
+
+provider "aws" {
+    access_key = "${var.AWS_ACCESS_KEY}"
+    secret_key = "${var.AWS_SECRET_KEY}"
+    region = "${var.AWS_REGION}"
+
+
+
+
+_______________________________
+variable "AWS_REGION {
+    default us-east-1
+}
+
+variable "AMIS" {
+  type = "map"
+  default = {
+    us-east-1 = "ami-13be557e"
+    us-west-2 = "ami-06b94666"
+    eu-west-1 = "ami-0d729a60"
+  }
+}
+
+data "aws_availability_zones" "available" {} -- us-east-1a, 1b, 1c 1d 1e 
+
+variable aws_subnet "subtables" {
+	type =list
+	value = ["192.168.1.0/24", "192.168.2.0/24","192.168.3.0/24","192.168.4.0/24","192.168.5.0/24","192.168.6.0/24"]
+}
+
+count = aws_subnet.subtables  == 6
+ availability_zone       = "${data.aws_availability_zones.azs.names[0]
+
+
+ availability_zone       = "${data.aws_availability_zones.azs.names[count.index]}"
+
+vairable vpc_cidrblock {
+	default =192.168.0.0/16
+
+resource "aws_subnet" "testsubnet" {
+    count
+
+
+
+data "aws_db_instance" "database" {
+  db_instance_identifier = "my-test-database"
+}
+
+"${data.aws_db_instance.database.db_instance_identifier}"
+
+
+

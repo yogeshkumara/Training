@@ -1,0 +1,63 @@
+https://www.middlewareinventory.com/blog/ansible-ad-hoc-command-examples-cheat-sheet/
+
+
+
+
+
+---
+ - hosts: local
+   become: true
+   vars:
+    - pkg: "{{pkg_name}}"
+
+   tasks:
+     - name: installation of httpd package
+       yum: name="{{item}}" state=present
+       with_items:
+        - "{{pkg}}"
+       register: pkg_install
+ 
+
+
+     - name: starting httpd service
+       service: name="{{item}}" state=started enabled=yes
+       with_items:
+        - "{{pkg}}"
+       when: pkg_install|success 
+
+ansible-playbook --syntax-check secondplaybook3.yml
+ansible-playbook secondplaybook3.yml -e '{"pkg_name": [httpd, php]}' --check 
+ansible-playbook secondplaybook3.yml -e '{"pkg_name": [httpd, php]}'
+
+
+
+
+vi thridplaybook.yml
+---
+ - hosts: group1
+   become: true
+   tasks:
+     - name: Check PHP is installed 
+       command: php -v
+       register: php_installed
+       ignore_errors:  true
+
+     - name: printing register-output
+       debug: var=php_installed
+
+     - name: php installed
+       debug: msg='php is installed'
+       when: php_installed|success
+  
+     - name: php not installed
+       debug: msg='php is not installed'
+       when: php_installed|failed
+     
+ansible-playbook --syntax-check thridplaybook.yml
+ansible-playbook thridplaybook.yml  --check 
+ansible-playbook  thridplaybook.yml
+  
+
+ansible grp1 -m yum -a "name=php state=absent"
+
+ansible grp1 -m yum -a "name=php-* state=absent"

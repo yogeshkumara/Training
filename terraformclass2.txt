@@ -1,0 +1,28 @@
+mkdir code2
+cd code2
+
+vi provider.tf
+
+provider "aws" {
+    access_key = "${var.AWS_ACCESS_KEY}"
+    secret_key = "${var.AWS_SECRET_KEY}"
+    region = "${var.AWS_REGION}"
+_______________________________________________________
+vi vars.tf
+
+variable "AWS_ACCESS_KEY" {}
+variable "AWS_SECRET_KEY" {}
+variable "AWS_REGION" {}
+__________________________________________________________________________
+vi main.tf
+
+resource "aws_instance" "testinstance" {
+  ami           = "ami-06b94666"
+  instance_type = "t2.micro"
+ description = " This is a test instance"
+
+ tags= {
+    Name = "instance"
+ }
+
+}

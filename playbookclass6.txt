@@ -1,0 +1,41 @@
+vi userpar.yml
+---
+user_name: kumar
+user_password: kumar
+:wq!
+
+cat userpar.yaml
+ansible-vault encrypt userpar.yml
+1234566
+
+cat userpar.yaml
+23413254sdfa436234
+
+ansible-vault view userpar.yml
+____________________________________________________________
+vi usercreate.yaml
+---
+ - hosts: local
+   become: true
+   vars_files:
+    - userpar.yml 
+
+   tasks:
+     - name: Creating user
+       user: name={{user_name}} password={{user_password|password_hash('sha512')}} shell=/bin/bash
+
+ansible-playbook --syntax-check usercreate.yaml --ask-vault-pass
+ansible-playbook usercreate.yaml --check --ask-vault-pass
+ansible-playbook usercreate.yaml --ask-vault-pass
+
+1234566
+
+ansible-playbook usercreate.yaml --vault-pass-file=vaultpassword.yaml
+
+vi vaultpassword.yaml
+1234566
+
+
+useradd    -p exq1324saf2w
+
+https://github.com/PCextreme/ansible-role-mariadb/blob/master/tasks/centos.yml

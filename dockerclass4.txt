@@ -1,0 +1,19 @@
+
+
+docker network create -d bridge my-bridge-network
+docker network create -d overlay my-multihost-network
+
+docker network create --driver=bridge --subnet=172.28.0.0/16 --ip-range=172.28.5.0/24 --gateway=172.28.5.254 br0
+
+docker network create -d overlay \
+  --subnet=192.168.1.0/25 \
+  --subnet=192.170.2.0/25 \
+  --gateway=192.168.1.100 \
+  --gateway=192.170.2.100 \
+  --aux-address="my-router=192.168.1.5" --aux-address="my-switch=192.168.1.6" \
+  --aux-address="my-printer=192.170.1.5" --aux-address="my-nas=192.170.1.6" \
+  my-multihost-network
+
+
+docker run my_container --net=my_network
+

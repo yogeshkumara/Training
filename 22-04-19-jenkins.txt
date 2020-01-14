@@ -1,0 +1,150 @@
+ grep -i jenkins /etc/passwd
+
+jenkins:x:997:994:Jenkins Automation Server:/var/lib/jenkins:/bin/bash
+
+su - jenkins 
+
+ grep -i jenkins /etc/sudoers
+
+jenkins ALL=NOPASSWD: ALL
+
+
+
+echo " yum install $pkginstall_confirmation $pkgName"
+sudo yum install $pkginstall_confirmation $pkgName
+sudo yum list $pkgName
+sudo yum remove $pkginstall_confirmation $pkgName
+
+
+node {
+	parameters {
+        		string( name: 'PkgName',  description: 'provide the package name?' )
+		choice( name: 'pkginstall_confirmation', choice: "-y \n -n", description: 'whether you want to install package?' )
+    	}
+
+
+	stage("installing package") {
+		echo " yum install $pkginstall_confirmation $pkgName"
+		input 'whether u want to install the package or not ?'
+
+		sudo yum install $pkginstall_confirmation $pkgName
+
+	}
+	
+	stage("Removing package") {
+		sudo yum list $pkgName
+		input 'whether u want to uninstall the package or not ?'
+		sudo yum remove $pkginstall_confirmation $pkgName
+
+	}
+	stage("Email Notification") {
+		emailext body: 'testing of job ', subject: ' job status', to: 'kumar@gmail.com'
+
+	}
+}
+
+
+node (package installation and validation) {
+
+
+	sh label: '', script: '''echo " yum install $pkginstall_confirmation $pkgName"
+			sudo yum install $pkginstall_confirmation $pkgName
+			sudo yum list $pkgName
+			sudo yum remove $pkginstall_confirmation $pkgName'''
+
+	}
+
+
+
+
+
+node{
+	stage('installation of packages')  {
+		sh label: '', script: '''echo yum install $pkginstall_confirmation $pkgName
+			          	sudo yum install $pkginstall_confirmation $pkgName
+				sudo yum list $pkgName
+				sudo yum remove $pkginstall_confirmation $pkgName'''
+	}
+}
+
+node{
+	stage('installation of packages')  {
+		sh label: '', script: '''echo yum install $pkginstall_confirmation $pkgName
+			          	sudo yum install $pkginstall_confirmation $pkgName'''
+				
+	}
+	stage('uninstallation of packages')  {
+		sh label: '', script: '''sudo yum list $pkgName
+			          	sudo yum remove $pkginstall_confirmation $pkgName'''
+				
+	}
+
+}
+
+
+
+
+
+node{
+	stage('installation of packages')  {
+		sh label: '', script: '''echo yum install $pkginstall_confirmation $pkgName
+				
+			          	sudo yum install $pkginstall_confirmation $pkgName'''
+				
+	}
+	stage('uninstallation of packages')  {
+		sh label: '', script: '''sudo yum list $pkgName
+			          	sudo yum remove $pkginstall_confirmation $pkgName'''
+				
+	}
+
+}
+
+
+pipeline{
+    agent any
+    	stages{
+		stage('installation of packages')  {
+			sh label: '', script: '''echo " yum install $pkginstall_confirmation $pkgName"
+					sudo yum install $pkginstall_confirmation $pkgName'''
+
+		
+				}
+	}
+}
+
+		
+sh ''' echo " yum install $pkginstall_confirmation $pkgName"
+        sudo yum install $pkginstall_confirmation $pkgName'''
+
+sh label: '', script: '''echo " yum install $pkginstall_confirmation $pkgName"
+		sudo yum install $pkginstall_confirmation $pkgName'''
+
+pkg_inst = sh (script: '''echo " yum install $pkginstall_confirmation $pkgName"
+		      sudo yum install $pkginstall_confirmation $pkgName''',
+                        returnStdout: true)
+
+	echo $pkg_inst
+	println $pkg_inst
+
+
+
+
+
+
+
+
+
+
+
+
+stage('gitclone') {
+       git credentialsId: '125e426e-8bec-43ab-9282-96a7f24dcea4', url: 'https://github.com/pragathi-devopsgroup/ansible-playbooks.git'
+       sh label: '', script: '''cd /var/tmp
+                                git clone https://github.com/pragathi-devopsgroup/ansible-code.git/
+                                cd ansible-code
+                                ls -al'''
+    }
+
+
+

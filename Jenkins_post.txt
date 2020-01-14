@@ -1,0 +1,57 @@
+http://localhost:8080/env-vars.html
+http://10:808/env-vars.html
+
+
+node {
+    checkout scm
+
+    stage('test') {
+	
+	}
+
+post {
+        always {
+            echo 'One way or another, I have finished'
+            deleteDir() /* clean up our workspace */
+        }
+        success {
+            echo 'I succeeeded!'
+        }
+        unstable {
+            echo 'I am unstable :/'
+        }
+        failure {
+            echo 'I failed :('
+        }
+        changed {
+            echo 'Things were different before...'
+
+
+        }
+
+
+
+post {
+
+	if (env.currentBuild == 'success') {
+            		mail from: "jenkinstesting@gmail.com",
+         to: "premkumar.unix@gmail.com",
+         subject: "ansible deployement status ",
+         body: "Jenkins job ${env.JOB_NAME} - build ${env.BUILD_NUMBER}  ${currentBuild.currentResult}  		${env.JOB_URL} com
+plete"
+  }
+        } else {
+            sh '''exit 1'''
+        }
+
+
+post {
+
+	failed {
+	
+	}
+}
+
+
+
+${env.BRANCH_NAME}

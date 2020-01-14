@@ -1,0 +1,34 @@
+
+
+ansible group1 -m setup
+ 
+ansible group1 -m copy -a "src=/etc/hosts dest=/tmp/hosts" -b 
+
+
+ansible group1 -m file -a "dest=/var/tmp/a.txt mode=600" -b 
+ansible group1 -m file -a "dest=/var/tmp/b.txt mode=600 owner=example group=example" -b 
+
+ansible group1 -m file -a "dest=/var/tmp/c mode=755 owner=example group=example state=directory" -b 
+
+
+ansible group1 -m file -a "dest=/var/tmp/c state=absent" -b 
+
+
+ansible group1 -m git -a "repo=https://foo.example.org/repo.git dest=/home/ansadmin/ version=HEAD" -b -vv
+
+ansible group1 -m yum  -a "name=httpd state=latest" -b
+ansible group1 -m service -a "name=httpd state=started enabled=true"  -b
+
+ansible group1 -m group -a "name=apachegrp" -b 
+ansible group1 -m user -a "name=apacheuser group=apachegrp createhome=yes" -b
+
+ssh ansadmin@clientip -c "sudo useradd -md /home/apacheuser -G apachegrp apacheuser"
+
+ansible-doc -l |grep -i user
+
+ansible-doc -s user
+
+grep -i useradd user.py
+
+
+ansible-doc -l|grep -i ec2

@@ -1,0 +1,56 @@
+yum install git 
+
+git  clone https://github.com/pragathi-devopsgroup/TerraformLab.git
+
+
+git -h
+git --help
+git --version
+cd TerraformLab
+
+git remote -v
+git status
+git show
+
+touch file1
+git status
+
+git add file1
+git status
+git commit -m "added new file file1"
+git status
+git config --global  user.name   "pragathi-devopsgroup"
+git config --global  user.email  " pragathi-devopsgroup@github.com"
+
+git remote -v
+
+git add file1
+
+git add file 1 file2 file3
+
+git add -A
+git rm file3
+
+git commit -m "update file1 with while loop function update - 04/21/2019 "
+git push -u origin master
+
+
+
+git checkout -b master-first1    
+
+git checkout master-first1                 -- switch from master to branch
+
+git branch
+
+touch file 4
+git add file4 
+git commit -m "firstcommit"
+git push -u origin master-first1
+
+
+
+
+
+
+
+

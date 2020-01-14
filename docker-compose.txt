@@ -1,0 +1,91 @@
+https://docs.docker.com/compose/django/
+
+
+mkdir pythonproject
+
+cd pythonproject
+
+1.vi Dockerfile
+
+FROM python:3
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /code
+WORKDIR /code
+COPY requirements.txt /code/
+RUN pip install -r requirements.txt
+COPY . /code/
+
+2.  vi docker-compose.yaml
+
+version: '3'
+
+services:
+  db:
+    image: postgres
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+
+
+    depends_on:
+      - db
+1. vi requirements.txt
+
+Django>=2.0,<3.0
+psycopg2>=2.7,<3.0
+
+2. vi Dockerfile
+
+FROM python:3
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /code
+WORKDIR /code
+COPY requirements.txt /code/
+RUN pip install -r requirements.txt
+
+
+3. vi docker-compose.yaml
+services:
+    pythoncontainer:
+	 build: .
+    	ports:
+      	   - "8000:8000"
+
+docker-compose up
+
+
+https://docs.docker.com/compose/install/
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+docker-compose --help
+
+docker volume create vol1
+
+docker run -itd --name cont2  -v vol1:/apps  centos
+
+/var/tmp/
+
+docker run -itd --name cont3  -v /var/tmp/:/apps  centos
+
+docker run --name=nginx -d -v ~/nginxlogs:/var/log/nginx -p 5000:80 nginx
+mkdir -p /nas/nginx/appslogdir
+
+docker run --name=nginx -d -v /nas/nginx/appslogdir :/var/log  -p 5000:80 nginx
+
+cd /nas/nginx/appslogdir/
+vi messages
+
+cd /home/
+vi nginxlogs
+
+docker run -d \
+  --name devtest \
+  -v myvol2:/app \
+  nginx:latest
+
